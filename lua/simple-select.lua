@@ -9,11 +9,17 @@ return function(items, opts, on_choice)
   end
 
   local bufnr = vim.api.nvim_create_buf(false, true)
-  local lines = vim.iter(items):map(opts.format_item):totable()
+  local lines = {}
+  local max_length = 0
+  for _, item in ipairs(items) do
+    local line = opts.format_item(item)
+    table.insert(lines, line)
+    max_length = math.max(max_length, #line)
+  end
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
   vim.bo[bufnr].modifiable = false
 
-  local width = math.floor(vim.o.columns * 0.6)
+  local width = math.min(max_length, math.floor(vim.o.columns * 0.6))
   local height = math.min(#items, math.floor(vim.o.lines * 0.6))
   local win = vim.api.nvim_open_win(bufnr, true, {
     relative = 'editor',
