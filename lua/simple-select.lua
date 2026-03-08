@@ -22,6 +22,7 @@ return function(items, opts, on_choice)
     row = math.floor((vim.o.lines - height) / 2) - 1,
     col = math.floor((vim.o.columns - width) / 2),
     style = 'minimal',
+    border = vim.o.winborder == '' and 'single' or vim.o.winborder,
     title = opts.prompt,
   })
   vim.wo[win].winfixbuf = true
