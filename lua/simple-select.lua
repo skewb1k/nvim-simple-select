@@ -14,7 +14,7 @@ return function(items, opts, on_choice)
   vim.bo[bufnr].modifiable = false
 
   local width = math.floor(vim.o.columns * 0.6)
-  local height = math.floor(vim.o.lines * 0.6)
+  local height = math.min(#items, math.floor(vim.o.lines * 0.6))
   local win = vim.api.nvim_open_win(bufnr, true, {
     relative = 'editor',
     width = width,
