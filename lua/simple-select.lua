@@ -1,7 +1,5 @@
 --- A simple implementation of vim.ui.select using a floating window.
 --- Usage: vim.ui.select = require('simple-select')
----
---- MIT License Copyright (c) 2026 skewb1k <skewb1kunix@gmail.com>
 return function(items, opts, on_choice)
   if #items == 0 then
     on_choice(nil)
