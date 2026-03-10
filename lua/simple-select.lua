@@ -11,8 +11,9 @@ return function(items, opts, on_choice)
   local bufnr = vim.api.nvim_create_buf(false, true)
   local lines = {}
   local max_length = 0
+  local format_item = opts.format_item or tostring
   for _, item in ipairs(items) do
-    local line = opts.format_item(item)
+    local line = format_item(item)
     table.insert(lines, line)
     max_length = math.max(max_length, #line)
   end
@@ -29,7 +30,7 @@ return function(items, opts, on_choice)
     col = math.floor((vim.o.columns - width) / 2),
     style = 'minimal',
     border = vim.o.winborder == '' and 'single' or vim.o.winborder,
-    title = opts.prompt,
+    title = opts.prompt or 'Select one of:',
   })
   vim.wo[win].winfixbuf = true
   vim.wo[win].cursorline = true
