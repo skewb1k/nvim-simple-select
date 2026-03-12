@@ -10,6 +10,7 @@ return function(items, opts, on_choice)
   local lines = {}
   local max_length = 0
   local format_item = opts.format_item or tostring
+  local title = opts.prompt or 'Select one of:'
   for _, item in ipairs(items) do
     local line = format_item(item)
     table.insert(lines, line)
@@ -18,7 +19,7 @@ return function(items, opts, on_choice)
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
   vim.bo[bufnr].modifiable = false
 
-  local width = math.min(max_length, math.floor(vim.o.columns * 0.6))
+  local width = math.min(math.max(max_length, #title), math.floor(vim.o.columns * 0.6))
   local height = math.min(#items, math.floor(vim.o.lines * 0.6))
   local win = vim.api.nvim_open_win(bufnr, true, {
     relative = 'editor',
@@ -28,7 +29,7 @@ return function(items, opts, on_choice)
     col = math.floor((vim.o.columns - width) / 2),
     style = 'minimal',
     border = vim.o.winborder == '' and 'single' or vim.o.winborder,
-    title = opts.prompt or 'Select one of:',
+    title = title,
   })
   vim.wo[win].winfixbuf = true
   vim.wo[win].cursorline = true
